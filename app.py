@@ -47,8 +47,22 @@ def predict_frame(frame):
     with torch.no_grad():
         logits = model(img_tensor)
         probs = nn.Softmax(dim=1)(logits)
-        predicted_class = classes[torch.argmax(probs)]
-        return predicted_class, torch.max(probs).item()
+        return probs.squeeze().tolist()  # Return probabilities as a list
+
+def draw_text_with_background(frame, text, position, font=cv2.FONT_HERSHEY_SIMPLEX, 
+                               font_scale=0.8, font_thickness=2, box_color=(0, 0, 0), text_color=(255, 255, 255)):
+    # Get the size of the text box
+    (text_width, text_height), _ = cv2.getTextSize(text, font, font_scale, font_thickness)
+    
+    # Set the position for the text box
+    x, y = position
+    box_coords = ((x, y - text_height - 10), (x + text_width + 10, y))
+    
+    # Draw the background rectangle
+    cv2.rectangle(frame, box_coords[0], box_coords[1], box_color, -1)  # Fill the rectangle with box_color
+
+    # Draw the text
+    cv2.putText(frame, text, position, font, font_scale, text_color, font_thickness, cv2.LINE_AA)
 
 while True:
     ret, frame = cap.read()
@@ -57,11 +71,23 @@ while True:
         break
 
     # Get prediction from the model
-    predicted_class, confidence = predict_frame(frame)
-
-    # Display the prediction on the frame
+    probs = predict_frame(frame)
+    
+    # Find the predicted class
+    predicted_class = classes[probs.index(max(probs))]
+    confidence = max(probs)
+    
+    # Display the predicted class on the frame
     label = f"{predicted_class} ({confidence:.2f})"
-    cv2.putText(frame, label, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+    draw_text_with_background(frame, label, (10, 50))
+
+    # Display all probabilities
+    for i, (cls, prob) in enumerate(zip(classes, probs)):
+        text = f"{cls}: {prob:.2f}"
+        draw_text_with_background(frame, text, (10, 100 + i * 30))
+
+    # Display probability distribution for debugging
+    print(f"Probability Distribution: {dict(zip(classes, probs))}")
 
     # Show the frame
     cv2.imshow('Facial Expression Recognition', frame)
