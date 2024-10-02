@@ -59,7 +59,7 @@ Original Age: 10<br>
 Predicted Gender: Male<br>
 Predicted Age: 11<br>
 
-![image](https://raw.githubusercontent.com/ASHISHKUMAR2411/DL-Simplified/main/Age%20and%20Sex%20Prediction/Images/test1.png)
+
 
 - Test Image 
 
@@ -68,8 +68,6 @@ Original Age: 25<br>
 Predicted Gender: Male<br>
 Predicted Age: 24<br>
 
-![image](https://raw.githubusercontent.com/ASHISHKUMAR2411/DL-Simplified/main/Age%20and%20Sex%20Prediction/Images/test2.png)
-
 - Test Image 
 
 Original Gender: Female<br>
@@ -77,11 +75,7 @@ Original Age: 29<br>
 Predicted Gender: Female<br>
 Predicted Age: 29<br>
 
-![image](https://raw.githubusercontent.com/ASHISHKUMAR2411/DL-Simplified/main/Age%20and%20Sex%20Prediction/Images/test3.png)
 
 ### 📢 **Conclusion**
 We can vary the number of epochs to get more accuracy on models. So far, we have achieved an accuracy of more than 95%.
 
-### ✒️ **Your Signature**
-Name: Ashish Kumar<br>
-License: MIT
